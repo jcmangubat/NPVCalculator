@@ -1,0 +1,6 @@
+@NPVCalculator.API_HostAddress = http://localhost:5148
+
+GET {{NPVCalculator.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
