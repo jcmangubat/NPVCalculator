@@ -1,0 +1,24 @@
+.App {
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.App h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #007bff;
+}
+
+.App section {
+  margin-top: 2rem;
+}
+
+.App .loading {
+  font-style: italic;
+  color: #555;
+}
+
+.App .error {
+  color: #c00;
+  font-weight: 500;
+}
