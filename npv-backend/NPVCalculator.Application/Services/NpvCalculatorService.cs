@@ -13,10 +13,8 @@ public class NpvCalculatorService(IMemoryCache cache) : INpvCalculatorService
         var cacheKey = GenerateCacheKey(request);
 
         if (_cache.TryGetValue(cacheKey, out List<NpvResult>? cachedResults))
-        {
             return cachedResults!;
-        }
-
+        
         var results = new List<NpvResult>();
         for (decimal rate = request.LowerBoundRate; rate <= request.UpperBoundRate; rate += request.Increment)
         {

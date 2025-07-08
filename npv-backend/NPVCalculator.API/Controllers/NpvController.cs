@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NPVCalculator.Application.Interfaces;
 using NPVCalculator.Domain.Models;
+using System.Collections.Generic;
 using System.Text;
 
 namespace NPVCalculator.API.Controllers;
@@ -32,7 +33,7 @@ public class NpvController(INpvCalculatorService service) : ControllerBase
     /// <param name="request">The input parameters for the NPV calculation including cash flows and rate bounds.</param>
     /// <returns>A list of NPV results for each discount rate increment in the specified range.</returns>
     [HttpPost("calculate")]
-    public IActionResult Calculate([FromBody] NpvRequest request)
+    public async Task<IActionResult> Calculate([FromBody] NpvRequest request)
     {
         if (request.CashFlows == null || request.CashFlows.Count == 0)
             return BadRequest("CashFlows are required.");
@@ -40,7 +41,10 @@ public class NpvController(INpvCalculatorService service) : ControllerBase
         if (request.LowerBoundRate < 0 || request.UpperBoundRate < request.LowerBoundRate || request.Increment <= 0)
             return BadRequest("Invalid rate bounds or increment.");
 
-        var results = _service.Calculate(request);
+        // not necessary to use Task.FromResult, but it allows for async consistency;
+        // also future proofing if service becomes async
+        var results = await Task.FromResult(_service.Calculate(request));
+
         return Ok(results);
     }
 
@@ -66,8 +70,11 @@ public class NpvController(INpvCalculatorService service) : ControllerBase
     /// <param name="request">The input parameters for the NPV calculation.</param>
     /// <returns>A downloadable CSV file containing DiscountRate and NPV columns.</returns>
     [HttpPost("calculate/csv")]
-    public IActionResult CalculateCsv([FromBody] NpvRequest request)
+    public async Task<IActionResult> CalculateCsv([FromBody] NpvRequest request)
     {
+        // Placeholder await to preserve async method signature and suppress CS1998
+        await Task.CompletedTask;
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -95,8 +102,11 @@ public class NpvController(INpvCalculatorService service) : ControllerBase
     /// </remarks>
     /// <returns>A populated <see cref="NpvRequest"/> object with sample values.</returns>
     [HttpGet("sample-request")]
-    public ActionResult<NpvRequest> GetSampleRequest()
+    public async Task<ActionResult<NpvRequest>> GetSampleRequest()
     {
+        // Placeholder await to preserve async method signature and suppress CS1998
+        await Task.CompletedTask;
+
         return Ok(new NpvRequest
         {
             CashFlows = [-10000, 3000, 4200, 6800],
@@ -114,8 +124,11 @@ public class NpvController(INpvCalculatorService service) : ControllerBase
     /// </remarks>
     /// <returns>An object containing min/max discount rates and max allowable cash flows.</returns>
     [HttpGet("range-info")]
-    public ActionResult<object> GetRangeInfo()
+    public async Task<ActionResult<object>> GetRangeInfo()
     {
+        // Placeholder await to preserve async method signature and suppress CS1998
+        await Task.CompletedTask;
+
         return Ok(new
         {
             MinRate = 0.0,
@@ -134,9 +147,12 @@ public class NpvController(INpvCalculatorService service) : ControllerBase
     /// <param name="request">The NPV input parameters including cash flows and a single discount rate.</param>
     /// <returns>A single <see cref="NpvResult"/> containing the discount rate and corresponding NPV.</returns>
     [HttpPost("preview")]
-    public ActionResult<NpvResult> Preview([FromBody] NpvRequest request)
+    public async Task<ActionResult<NpvResult>> Preview([FromBody] NpvRequest request)
     {
         //if (!ModelState.IsValid) return BadRequest(ModelState); --> will be taken care of by FluentValidation
+
+        // Placeholder await to preserve async method signature and suppress CS1998
+        await Task.CompletedTask;
 
         decimal rate = Convert.ToDecimal(request.LowerBoundRate);
         decimal npv = 0m;
@@ -163,5 +179,9 @@ public class NpvController(INpvCalculatorService service) : ControllerBase
     /// </remarks>
     /// <returns>String response indicating operational status.</returns>
     [HttpGet("health")]
-    public IActionResult Health() => Ok("API is running");
+    public async Task<IActionResult> Health()
+    {
+        await Task.CompletedTask; // placeholder to satisfy async signature
+        return Ok("API is running");
+    }
 }
