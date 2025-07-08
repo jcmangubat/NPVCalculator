@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NPVCalculator.Application\NPVCalculator.Application.csproj" />
+    <ProjectReference Include="..\NPVCalculator.Application\NPVCalculator.Application.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

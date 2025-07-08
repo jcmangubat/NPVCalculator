@@ -23,5 +23,5 @@ This project demonstrates practical experience in:
 ## Tech Stack
 
 - **Backend**: ASP.NET Core, C#, xUnit  
-- **Frontend**: React (or Vue/Angular), JavaScript/TypeScript, Chart.js  
+- **Frontend**: ReactJS, Chart.js  
 - **Hosting**: GitHub Pages (Frontend), Render (Backend)
