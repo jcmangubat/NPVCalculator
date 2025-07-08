@@ -1,6 +1,56 @@
-@NPVCalculator.API_HostAddress = http://localhost:5148
+﻿@NPVCalculator.API_HostAddress = https://localhost:7030
 
-GET {{NPVCalculator.API_HostAddress}}/weatherforecast/
+### Health Check
+GET {{NPVCalculator.API_HostAddress}}/api/npv/health
 Accept: application/json
 
 ###
+
+### Get Sample Request
+GET {{NPVCalculator.API_HostAddress}}/api/npv/sample-request
+Accept: application/json
+
+###
+
+### Get Range Info
+GET {{NPVCalculator.API_HostAddress}}/api/npv/range-info
+Accept: application/json
+
+###
+
+### Preview NPV (Single Discount Rate)
+POST {{NPVCalculator.API_HostAddress}}/api/npv/preview
+Content-Type: application/json
+
+{
+  "cashFlows": [-10000, 3000, 4200, 6800],
+  "lowerBoundRate": 5.0,
+  "upperBoundRate": 5.0,
+  "increment": 1.0
+}
+
+###
+
+### Calculate Full NPV Range
+POST {{NPVCalculator.API_HostAddress}}/api/npv/calculate
+Content-Type: application/json
+
+{
+  "cashFlows": [-10000, 3000, 4200, 6800],
+  "lowerBoundRate": 1.0,
+  "upperBoundRate": 5.0,
+  "increment": 1.0
+}
+
+###
+
+### Download NPV as CSV
+POST {{NPVCalculator.API_HostAddress}}/api/npv/calculate/csv
+Content-Type: application/json
+
+{
+  "cashFlows": [-10000, 3000, 4200, 6800],
+  "lowerBoundRate": 1.0,
+  "upperBoundRate": 100.0,
+  "increment": 5.0
+}
